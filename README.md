@@ -1,0 +1,1 @@
+Play project to demonstrate interaction between multiple microservices. It also covers authorization using identity server. An API gateway will also be added to secure the services and limit access.
