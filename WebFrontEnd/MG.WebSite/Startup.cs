@@ -1,3 +1,4 @@
+using MG.WebSite.Services;
 using MG.WebSite.WebClients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,7 +30,8 @@ namespace MG.WebSite
             services.AddHttpClient<ProductCategoriesClient>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
-                       
+
+            services.AddSingleton<IAppCache, InMemoryCache>();
         }
 
         private IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()

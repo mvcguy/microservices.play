@@ -73,6 +73,7 @@ namespace MG.Services.IdentityServer
                     ClientSecrets = { new Secret("1e230c33-6de2-4755-bcbf-333f1afe1ff2".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = { "catalog.fullaccess", "catalog.readonlyaccess" },
+                    //AccessTokenLifetime = 60 // set the expiry of token, default is 3600 seconds
                 }
             };
     }
