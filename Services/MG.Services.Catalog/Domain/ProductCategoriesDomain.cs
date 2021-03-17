@@ -21,16 +21,20 @@ namespace MG.Services.Catalog.Domain
 
         public IEnumerable<ProductCategoryDto> GetProductCategories(int pageNumber)
         {
-            var pageSize =
-                this.paginationPolicy.MaxPageSize <= 0
-                ? 100
-                : this.paginationPolicy.MaxPageSize;
+            int pageSize = GetPageSize();
 
             if (pageNumber <= 0)
             {
                 pageNumber = 1;
             }
             return repository.GetProductCategories(pageNumber, pageSize).Select(x => x.ToDto());
+        }
+
+        private int GetPageSize()
+        {
+            return this.paginationPolicy.MaxPageSize <= 0
+                ? 100
+                : this.paginationPolicy.MaxPageSize;
         }
 
         public ProductCategoryDto GetProductCategory(Guid id)
@@ -77,6 +81,19 @@ namespace MG.Services.Catalog.Domain
             entry.ModifiedOn = DateTime.Now;
 
             repository.UpdateProductCategory(entry);
+        }
+
+        public MetaDataDto GetProductCategoriesMetaData()
+        {
+            var count = repository.CountProductCategories();
+            var pageSize = GetPageSize();
+            var pages = count / (decimal)pageSize;
+
+            return new MetaDataDto
+            {
+                TotalPages = (int)Math.Ceiling(pages),
+                PageSize = pageSize
+            };
         }
 
         public int SaveChanges()

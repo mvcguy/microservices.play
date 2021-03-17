@@ -23,6 +23,11 @@ namespace MG.Services.Catalog.Domain.InMemoryStores
             this.productCategories.Add(productCategory);
         }
 
+        public int CountProductCategories()
+        {
+            return this.productCategories.Count();
+        }
+
         public IEnumerable<ProductCategory> GetProductCategories(int pageNumber, int pageSize)
         {           
             var skip = (pageNumber - 1) * pageSize;

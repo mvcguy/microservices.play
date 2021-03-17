@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MG.WebSite.WebClients
@@ -18,19 +19,20 @@ namespace MG.WebSite.WebClients
         private string catalogServiceUrl = "https://localhost:5020";
         private string idServerUrl = "https://localhost:5010/";
         private string tokenKey = "mg.website.token";
+        private string metaDataKey = "mg.website.categories.metadata";
 
         public ProductCategoriesClient(HttpClient client, IAppCache appCache)
         {
             this.client = client;
             this.appCache = appCache;
-            proxy = new ProductCategoriesProxy(catalogServiceUrl, this.client);            
+            proxy = new ProductCategoriesProxy(catalogServiceUrl, this.client);
         }
 
 
         private async Task InitializeToken()
         {
-            
-            if(!string.IsNullOrWhiteSpace(token)) return;
+
+            if (!string.IsNullOrWhiteSpace(token)) return;
 
             var cacheToken = appCache.GetString(tokenKey);
             if (!string.IsNullOrWhiteSpace(cacheToken))
@@ -85,7 +87,7 @@ namespace MG.WebSite.WebClients
             }
 
             this.token = tokenResult.AccessToken;
-            appCache.SetString(tokenKey, tokenResult.AccessToken, 
+            appCache.SetString(tokenKey, tokenResult.AccessToken,
                 TimeSpan.FromSeconds(tokenResult.ExpiresIn - 10));
 
             Console.ForegroundColor = ConsoleColor.Magenta;
@@ -96,8 +98,35 @@ namespace MG.WebSite.WebClients
         public async Task<IEnumerable<ProductCategoryDto>> GetProductCategories(int page = 1)
         {
             await InitializeToken();
-            client.SetBearerToken(this.token);            
+            client.SetBearerToken(this.token);
             return await proxy.GetCategoriesAsync(page);
+        }
+
+        public async Task<MetaDataDto> GetProductCategoriesMetaData()
+        {
+            var cached = appCache.GetString(metaDataKey);
+            if (!string.IsNullOrWhiteSpace(cached))
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Metadata is found in cache");
+                Console.ResetColor();
+
+                return JsonSerializer.Deserialize<MetaDataDto>(cached);
+            }
+
+            await InitializeToken();
+            client.SetBearerToken(this.token);
+                        
+            var metadata = await proxy.GetCategoriesMetaDataAsync();
+
+            var cache = JsonSerializer.Serialize(metadata);
+            appCache.SetString(metaDataKey, cache, TimeSpan.FromMinutes(90));
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("Metadata is taken from db");
+            Console.ResetColor();
+
+            return metadata;
         }
     }
 }

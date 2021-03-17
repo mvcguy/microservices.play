@@ -26,6 +26,13 @@ namespace MG.Services.Catalog.Controllers
             return Ok(domain.GetProductCategories(page));
         }
 
+        [HttpGet("metadata",Name = "GetCategoriesMetaData")]
+        [ProducesResponseType(type: typeof(MetaDataDto), (int)HttpStatusCode.OK)]
+        public IActionResult GetCategoriesMetaData()
+        {
+            var metaData = domain.GetProductCategoriesMetaData();
+            return Ok(metaData);
+        }
 
         [HttpGet("{id}", Name = "GetCategoryById")]
         [ProducesResponseType(type: typeof(ProductCategoryDto), (int)HttpStatusCode.OK)]

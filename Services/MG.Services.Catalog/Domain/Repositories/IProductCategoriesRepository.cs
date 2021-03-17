@@ -14,6 +14,8 @@ namespace MG.Services.Catalog.Domain.Repositories
 
         void UpdateProductCategory(ProductCategory productCategory);
 
+        int CountProductCategories();
+
         int SaveChanges();
     }
 }

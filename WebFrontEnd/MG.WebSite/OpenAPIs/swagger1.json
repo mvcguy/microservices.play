@@ -187,6 +187,36 @@
         }
       }
     },
+    "/api/v1/Categories/metadata": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "operationId": "GetCategoriesMetaData",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetaDataDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetaDataDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetaDataDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/Categories/{id}": {
       "get": {
         "tags": [
@@ -322,6 +352,20 @@
   },
   "components": {
     "schemas": {
+      "MetaDataDto": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "ProductCategoryDto": {
         "required": [
           "description",

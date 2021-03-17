@@ -14,6 +14,8 @@ namespace MG.WebSite.Models
 
         public int TotalPages { get; set; }
 
+        public int PageSize { get; set; }
+
         public ProductCategoriesVm()
         {
             ProductCategories = new List<ProductCategoryDto>();

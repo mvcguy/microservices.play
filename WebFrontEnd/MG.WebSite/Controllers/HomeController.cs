@@ -25,10 +25,11 @@ namespace MG.WebSite.Controllers
         public async Task<IActionResult> Index([FromQuery] int page = 1)
         {
             var items = await categoriesClient.GetProductCategories(page);
+            var metadata = await categoriesClient.GetProductCategoriesMetaData();
             return View(new ProductCategoriesVm
             {
                 PageNumber = page,
-                TotalPages = 100,
+                TotalPages = metadata.TotalPages,
                 ProductCategories = items
             });
         }
