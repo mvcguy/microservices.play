@@ -1,8 +1,45 @@
-﻿@{
+﻿@model ProductCategoriesVm
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div>
+    <table class="table table-striped">
+        <caption style="caption-side:top!important">Please select a category</caption>
+        <thead>
+            <tr>
+                <td colspan="2">
+                    <div style="float:right">
+                        <div>
+                            <div style="float:left"><a href="~/?page=@(Model.PageNumber - 1 < 1 ? 1 : Model.PageNumber - 1)">&lt;&lt; Prev</a></div>
+                            <div style="float:left"> -@(Model.PageNumber)- </div>
+                            <div style="float:left"><a href="~/?page=@(Model.PageNumber + 1)">Next &gt;&gt</a></div>
+                        </div>
+                    </div>
+
+                </td>
+
+            </tr>
+            <tr>
+                <th>Description</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ProductCategories)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
 </div>

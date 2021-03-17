@@ -17,6 +17,32 @@ namespace MG.Services.Catalog.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
+        private static IEnumerable<WeatherForecast> _dummyWeatherData;
+
+        private static IEnumerable<WeatherForecast> DummyWeatherData
+        {
+            get
+            {
+                if (_dummyWeatherData != null) return _dummyWeatherData;
+
+                var rng = new Random();
+                _dummyWeatherData = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+                {
+                    Id = Guid.NewGuid(),
+                    Date = DateTime.Now.AddDays(index),
+                    TemperatureC = rng.Next(-20, 55),
+                    Summary = Summaries[rng.Next(Summaries.Length)]
+                })
+                .ToArray();
+
+                return _dummyWeatherData;
+            }
+            set
+            {
+                _dummyWeatherData = value;
+            }
+        }
+
         private readonly ILogger<WeatherForecastController> _logger;
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
@@ -27,14 +53,25 @@ namespace MG.Services.Catalog.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            return DummyWeatherData;
+        }
+
+        [HttpGet("{id}", Name = "GetById")]
+        public IActionResult GetById(Guid id)
+        {
+            var item = DummyWeatherData.FirstOrDefault(x => x.Id == id);
+            if (item == null) return NotFound();
+
+            return Ok(item);
+        }
+
+        [Authorize("catalog.fullaccess")]
+        [HttpPost]
+        public IActionResult Post([FromBody] WeatherForecast weather)
+        {
+            weather.Id = Guid.NewGuid();
+            DummyWeatherData = DummyWeatherData.Append(weather);
+            return CreatedAtAction("GetById", new { id = weather.Id }, weather);
         }
     }
 }

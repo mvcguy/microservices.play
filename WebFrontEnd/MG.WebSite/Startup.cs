@@ -1,13 +1,13 @@
+using MG.WebSite.WebClients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Polly;
+using Polly.Extensions.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace MG.WebSite
 {
@@ -23,7 +23,35 @@ namespace MG.WebSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddControllersWithViews();
+
+            services.AddHttpClient<ProductCategoriesClient>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                       
+        }
+
+        private IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+        {
+            var policy = HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(3, TimeSpan.FromSeconds(15));
+            return policy;
+        }
+
+        private IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            var policy = HttpPolicyExtensions.HandleTransientHttpError()
+                .WaitAndRetryAsync(10,
+                attemptNbr => TimeSpan.FromMilliseconds(Math.Pow(1.5, attemptNbr)),
+                (result, waitingTime) =>
+                {
+                    var message = result.Exception?.Message;
+                    Console.WriteLine($"Retrying due to error: '{message}'");
+                });
+
+            return policy;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

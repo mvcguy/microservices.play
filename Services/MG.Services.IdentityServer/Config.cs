@@ -22,7 +22,7 @@ namespace MG.Services.IdentityServer
         //
         public static IEnumerable<ApiResource> ApiResources =>
             new ApiResource[]{
-                new ApiResource("mg.services.catalog.audience", "MG Product catalog API")
+                new ApiResource("mg.services.catalog:API", "MG Product catalog API")
                 {
                     Scopes = { "catalog.fullaccess", "catalog.readonlyaccess" }
                 }
@@ -69,7 +69,7 @@ namespace MG.Services.IdentityServer
                 },
                 new Client
                 {
-                    ClientId = "mg.services.catalog",
+                    ClientId = "mg.website",
                     ClientSecrets = { new Secret("1e230c33-6de2-4755-bcbf-333f1afe1ff2".Sha256()) },
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = { "catalog.fullaccess", "catalog.readonlyaccess" },

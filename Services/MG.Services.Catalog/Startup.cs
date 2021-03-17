@@ -1,21 +1,20 @@
+using MG.Services.Catalog.Domain;
+using MG.Services.Catalog.Domain.InMemoryStores;
+using MG.Services.Catalog.Domain.Repositories;
+using MG.Services.Catalog.Filters;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MG.Services.Catalog
 {
@@ -35,18 +34,26 @@ namespace MG.Services.Catalog
                 .AddJwtBearer(options =>
                 {
                     options.Authority = "https://localhost:5010";
-                    options.Audience = "mg.services.catalog.audience";
+                    options.Audience = "mg.services.catalog:API";
                 });
-
-            var authenticatedUserFilter = GetAuthorizeFilter();
 
             services.AddControllers(options =>
             {
-                options.Filters.Add(authenticatedUserFilter);
+                options.Filters.Add(GetAuthorizeFilter());
+                options.Filters.Add(GetExceptionsFilter());
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("catalog.fullaccess",
+                    p => p.RequireClaim("scope", "catalog.fullaccess"));
             });
 
             services.AddSwaggerGen(ConfigureSwagger());
+
+            SetupDomainObjects(services);
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -126,13 +133,40 @@ namespace MG.Services.Catalog
             //
             var policy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
-                .RequireClaim("scope", "catalog.fullaccess")
                 .Build();
-
-           
-
             return new AuthorizeFilter(policy);
         }
 
+        private IFilterMetadata GetExceptionsFilter()
+        {
+            return new ExceptionsFilter();
+        }
+
+        private void SetupDomainObjects(IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSingleton(provider =>
+            {
+                return new PaginationPolicy { MaxPageSize = 25 };
+            });
+
+            services.AddSingleton(provider =>
+            {
+                var fakeProductCatalog = new ProductCategoriesInMemory();
+                fakeProductCatalog.Seed();
+                return fakeProductCatalog;
+            });
+
+            //services.AddScoped<IProductCategoriesRepository,
+            //    ProductCategoryRepositoryInMemory>();
+
+            services.AddScoped<IProductCategoriesRepository,
+              ProductCategoriesRepository>();
+
+            services.AddScoped<ProductCategoriesDomain>();
+        }
     }
 }

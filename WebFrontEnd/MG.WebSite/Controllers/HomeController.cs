@@ -1,4 +1,5 @@
 ﻿using MG.WebSite.Models;
+using MG.WebSite.WebClients;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,15 +13,24 @@ namespace MG.WebSite.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ProductCategoriesClient categoriesClient;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, 
+            ProductCategoriesClient categoriesClient)
         {
             _logger = logger;
+            this.categoriesClient = categoriesClient;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index([FromQuery] int page = 1)
         {
-            return View();
+            var items = await categoriesClient.GetProductCategories(page);
+            return View(new ProductCategoriesVm
+            {
+                PageNumber = page,
+                TotalPages = 100,
+                ProductCategories = items
+            });
         }
 
         public IActionResult Privacy()
