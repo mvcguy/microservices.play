@@ -1,4 +1,4 @@
-﻿using MG.Services.Catalog.Domain;
+﻿using MG.Services.Catalog.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace MG.Services.Catalog.Filters

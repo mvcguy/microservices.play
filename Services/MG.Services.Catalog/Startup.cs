@@ -167,6 +167,12 @@ namespace MG.Services.Catalog
               ProductCategoriesRepository>();
 
             services.AddScoped<ProductCategoriesDomain>();
+
+            services.AddScoped<IProductsRepository,
+              ProductsRepository>();
+
+            services.AddScoped<ProductsDomain>();
+
         }
     }
 }

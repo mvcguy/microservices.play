@@ -32,8 +32,6 @@ namespace MG.Services.Catalog.Domain.Repositories
             var skip = (pageNumber - 1) * pageSize;
             var take = pageSize;
 
-
-
             return this.productCategories
                 .Where(x => !x.Deleted)
                 .OrderBy(x => x.Name)

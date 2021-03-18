@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MG.Services.Catalog.Domain.Models.Dtos
 {
-    public class ProductCategoryDto
+    public class ProductDto
     {
         public Guid Id { get; set; }
 
@@ -16,5 +16,21 @@ namespace MG.Services.Catalog.Domain.Models.Dtos
         [MaxLength(2048)]
         [MinLength(2)]
         public string Description { get; set; }
+
+        [Required]
+        [Range(0, 1000000)]
+        public decimal Price { get; set; }
+
+        [Required]
+        [Range(0, 1000000)]
+        public decimal Quantity { get; set; }
+
+        [Required]
+        [MinLength(3)]
+        [MaxLength(3)]
+        public string Currency { get; set; }
+
+        public Guid CategoryId { get; set; }
+
     }
 }

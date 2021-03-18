@@ -1,9 +1,5 @@
 ﻿using MG.Services.Catalog.Domain.Models.Db;
 using MG.Services.Catalog.Domain.Models.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MG.Services.Catalog.Domain.Models.Mapping
 {
@@ -28,6 +24,37 @@ namespace MG.Services.Catalog.Domain.Models.Mapping
                 Id = model.Id,
                 Name = model.Name,
                 Description = model.Description
+            };
+        }
+
+        public static ProductDto ToDto(this Product model)
+        {
+            if (model == null) return null;
+            return new ProductDto
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                CategoryId = model.CategoryId,
+                Quantity = model.Quantity,
+                Currency = model.Currency
+
+            };
+        }
+
+        public static Product ToDbModel(this ProductDto model)
+        {
+            if (model == null) return null;
+            return new Product
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                CategoryId = model.CategoryId,
+                Quantity = model.Quantity,
+                Currency = model.Currency
             };
         }
     }

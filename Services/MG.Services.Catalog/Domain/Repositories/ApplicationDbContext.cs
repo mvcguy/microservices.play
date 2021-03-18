@@ -10,6 +10,8 @@ namespace MG.Services.Catalog.Domain.Repositories
         }
 
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
+
+        public virtual DbSet<Product> Products { get; set; }
     }
 
 }
