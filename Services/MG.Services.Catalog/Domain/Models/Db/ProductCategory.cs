@@ -1,12 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MG.Services.Catalog.Domain.Models.Db
 {
     public class ProductCategory
     {
-        [Key]
-        public Guid Id { get; set; }
+        [Key]        
+        public string Id { get; set; }
 
         public string Name { get; set; }
 

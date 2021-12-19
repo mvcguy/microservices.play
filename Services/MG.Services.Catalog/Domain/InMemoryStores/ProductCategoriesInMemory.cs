@@ -57,7 +57,7 @@ namespace MG.Services.Catalog.Domain.InMemoryStores
         {
             var items = Enumerable.Range(1, 500).Select(index => new ProductCategory
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.NewGuid().ToString(),
                 Name = $"00{index}-CAT",
                 Description = $"_blank_{index}",
                 CreatedOn = DateTime.Now,

@@ -20,9 +20,9 @@ namespace IdentityServerHost.Quickstart.UI
                 var address = new
                 {
                     street_address = "One Hacker Way",
-                    locality = "Heidelberg",
+                    locality = "Islamabad",
                     postal_code = 69118,
-                    country = "Germany"
+                    country = "Pakistan"
                 };
 
                 return new List<TestUser>

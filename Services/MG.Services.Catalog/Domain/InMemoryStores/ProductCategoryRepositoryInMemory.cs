@@ -36,7 +36,7 @@ namespace MG.Services.Catalog.Domain.InMemoryStores
             return this.productCategories.Where(x=>!x.Deleted).OrderBy(x => x.CreatedOn).Skip(skip).Take(take);
         }
 
-        public ProductCategory GetProductCategory(Guid id)
+        public ProductCategory GetProductCategory(string id)
         {
             return productCategories.FirstOrDefault(x => x.Id == id && !x.Deleted);
         }

@@ -5,7 +5,7 @@ namespace MG.Services.Catalog.Domain.Models.Dtos
 {
     public class ProductCategoryDto
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [MaxLength(255)]

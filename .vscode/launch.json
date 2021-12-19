@@ -1,0 +1,91 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "MG-IDS4",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-IDS",
+            "program": "${workspaceFolder}/Services/MG.Services.IdentityServer/bin/Debug/netcoreapp3.1/MG.Services.IdentityServer.dll",
+            // "args": ["--urls","https://localhost:5020"],
+            "args": [],            
+            "cwd": "${workspaceFolder}/Services/MG.Services.IdentityServer",
+            "stopAtEntry": false,
+            // "serverReadyAction": {
+            //     "action": "openExternally",
+            //     "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+            // },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "launchBrowser": {
+                "enabled": false
+            }
+         },
+        {
+            "name": "MG-Catalog",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-CAT",
+            "program": "${workspaceFolder}/Services/MG.Services.Catalog/bin/Debug/netcoreapp3.1/MG.Services.Catalog.dll",
+            //"args": ["--urls","https://localhost:5020"],
+            "args": [],
+            "cwd": "${workspaceFolder}/Services/MG.Services.Catalog",
+            "stopAtEntry": false,
+            // "serverReadyAction": {
+            //     "action": "openExternally",
+            //     "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            // },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "launchBrowser": {
+                "enabled": false
+            }
+        },
+        {
+            "name": "MG-WebSite",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-WEB",
+            "program": "${workspaceFolder}/WebFrontEnd/MG.WebSite/bin/Debug/netcoreapp3.1/MG.WebSite.dll",
+            //"args": ["--urls","https://localhost:5030"],
+            "args": [],
+            "cwd": "${workspaceFolder}/WebFrontEnd/MG.WebSite",
+            "stopAtEntry": false,
+            // "serverReadyAction": {
+            //     "action": "openExternally",
+            //     "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            // },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "launchBrowser": {
+                "enabled": false
+            }
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Compound",
+            "configurations": ["MG-IDS4", "MG-Catalog", "MG-WebSite"]
+        }
+    ]   
+}

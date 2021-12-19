@@ -38,7 +38,7 @@ namespace MG.Services.Catalog.Controllers
         [ProducesResponseType(type: typeof(ProductCategoryDto), (int)HttpStatusCode.OK)]
         public IActionResult GetCategory(Guid id)
         {
-            var item = domain.GetProductCategory(id);
+            var item = domain.GetProductCategory(id.ToString());
             if (item == null) return NotFound();
 
             return Ok(item);
@@ -80,7 +80,7 @@ namespace MG.Services.Catalog.Controllers
         [ProducesResponseType(type: typeof(ProductCategoryDto), (int)HttpStatusCode.OK)]
         public IActionResult DeleteCategory(Guid id)
         {
-            var item = domain.DeleteProductCategory(id);
+            var item = domain.DeleteProductCategory(id.ToString());
 
             domain.SaveChanges();
 

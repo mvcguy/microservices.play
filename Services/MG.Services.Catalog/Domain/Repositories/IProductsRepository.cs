@@ -8,9 +8,9 @@ namespace MG.Services.Catalog.Domain.Repositories
     {
         void AddProduct(Product productCategory);
         int CountProducts();
-        Product GetProduct(Guid id);
+        Product GetProduct(string id);
         IEnumerable<Product> GetProducts(int pageNumber, int pageSize);
-        IEnumerable<Product> GetProductsByCategory(Guid categoryId, int pageNumber, int pageSize);
+        IEnumerable<Product> GetProductsByCategory(string categoryId, int pageNumber, int pageSize);
         int SaveChanges();
         void UpdateProduct(Product productCategory);
     }

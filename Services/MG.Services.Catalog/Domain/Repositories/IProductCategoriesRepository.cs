@@ -6,7 +6,7 @@ namespace MG.Services.Catalog.Domain.Repositories
 {
     public interface IProductCategoriesRepository
     {
-        ProductCategory GetProductCategory(Guid id);
+        ProductCategory GetProductCategory(string id);
 
         IEnumerable<ProductCategory> GetProductCategories(int pageNumber, int pageSize);
 

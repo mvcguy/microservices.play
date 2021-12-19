@@ -20,7 +20,7 @@ namespace MG.Services.Catalog.Domain
             this.paginationPolicy = paginationPolicy;
         }
 
-        public IEnumerable<ProductDto> GetProductsByCategoryId(Guid categoryId, 
+        public IEnumerable<ProductDto> GetProductsByCategoryId(string categoryId, 
             int pageNumber)
         {
             int pageSize = GetPageSize();
@@ -50,12 +50,12 @@ namespace MG.Services.Catalog.Domain
                 : this.paginationPolicy.MaxPageSize;
         }
 
-        public ProductDto GetProduct(Guid id)
+        public ProductDto GetProduct(string id)
         {
             return repository.GetProduct(id).ToDto();
         }
 
-        public ProductDto DeleteProduct(Guid id)
+        public ProductDto DeleteProduct(string id)
         {
             //
             // Soft delete only
@@ -71,11 +71,11 @@ namespace MG.Services.Catalog.Domain
             return entry.ToDto();
         }
 
-        public Guid AddProduct(ProductDto dto)
+        public string AddProduct(ProductDto dto)
         {
             var model = dto.ToDbModel();
 
-            model.Id = Guid.NewGuid();
+            model.Id = Guid.NewGuid().ToString();
             model.CreatedOn = DateTime.Now;
             model.ModifiedOn = DateTime.Now;
 

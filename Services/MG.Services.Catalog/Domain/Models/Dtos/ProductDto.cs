@@ -5,7 +5,7 @@ namespace MG.Services.Catalog.Domain.Models.Dtos
 {
     public class ProductDto
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [MaxLength(255)]
@@ -30,7 +30,7 @@ namespace MG.Services.Catalog.Domain.Models.Dtos
         [MaxLength(3)]
         public string Currency { get; set; }
 
-        public Guid CategoryId { get; set; }
+        public string CategoryId { get; set; }
 
     }
 }

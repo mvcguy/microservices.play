@@ -39,7 +39,6 @@ namespace MG.Services.Catalog.Domain.Models.Mapping
                 CategoryId = model.CategoryId,
                 Quantity = model.Quantity,
                 Currency = model.Currency
-
             };
         }
 

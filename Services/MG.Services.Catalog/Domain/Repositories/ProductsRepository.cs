@@ -8,7 +8,7 @@ namespace MG.Services.Catalog.Domain.Repositories
 {
     public class ProductsRepository : IProductsRepository
     {
-        private readonly DbContext dbContext;
+        private readonly ApplicationDbContext dbContext;
         private readonly DbSet<Product> products;
 
         public ProductsRepository(ApplicationDbContext dbContext)
@@ -27,17 +27,18 @@ namespace MG.Services.Catalog.Domain.Repositories
             return this.products.Count();
         }
 
-        public IEnumerable<Product> GetProductsByCategory(Guid categoryId,
+        public IEnumerable<Product> GetProductsByCategory(string categoryId,
             int pageNumber, int pageSize)
         {
             var skip = (pageNumber - 1) * pageSize;
             var take = pageSize;
 
-            return this.products
-                .Where(x => !x.Deleted && x.CategoryId == categoryId)
-                .OrderBy(x => x.Name)
+            var list = this.products
+                .OrderBy(x => x.Name)                
+                .Where(x => x.Deleted == false && x.CategoryId == categoryId)
                 .Skip(skip)
-                .Take(take);
+                .Take(take).ToList();
+            return list;
         }
 
         public IEnumerable<Product> GetProducts(int pageNumber, int pageSize)
@@ -52,7 +53,7 @@ namespace MG.Services.Catalog.Domain.Repositories
                 .Take(take);
         }
 
-        public Product GetProduct(Guid id)
+        public Product GetProduct(string id)
         {
             return products.FirstOrDefault(x => !x.Deleted && x.Id == id);
         }

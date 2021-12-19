@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace MG.Services.Catalog.Controllers
@@ -23,14 +24,14 @@ namespace MG.Services.Catalog.Controllers
         [ProducesResponseType(type: typeof(IEnumerable<ProductDto>), (int)HttpStatusCode.OK)]
         public IActionResult GetProducts([FromQuery] Guid categoryId, [FromQuery] int page = 1)
         {
-            return Ok(domain.GetProductsByCategoryId(categoryId, page));
+            return Ok(domain.GetProductsByCategoryId(categoryId.ToString(), page).ToList());
         }
 
         [HttpGet(Name = "GetProducts")]
         [ProducesResponseType(type: typeof(IEnumerable<ProductDto>), (int)HttpStatusCode.OK)]
         public IActionResult GetProducts([FromQuery] int page = 1)
         {
-            return Ok(domain.GetProducts(page));
+            return Ok(domain.GetProducts(page).ToList());
         }
 
         [HttpGet("metadata", Name = "GetProductsMetaData")]
@@ -45,7 +46,7 @@ namespace MG.Services.Catalog.Controllers
         [ProducesResponseType(type: typeof(ProductDto), (int)HttpStatusCode.OK)]
         public IActionResult GetProduct(Guid id)
         {
-            var item = domain.GetProduct(id);
+            var item = domain.GetProduct(id.ToString());
             if (item == null) return NotFound();
 
             return Ok(item);
@@ -87,7 +88,7 @@ namespace MG.Services.Catalog.Controllers
         [ProducesResponseType(type: typeof(ProductDto), (int)HttpStatusCode.OK)]
         public IActionResult DeleteProduct(Guid id)
         {
-            var item = domain.DeleteProduct(id);
+            var item = domain.DeleteProduct(id.ToString());
 
             domain.SaveChanges();
 

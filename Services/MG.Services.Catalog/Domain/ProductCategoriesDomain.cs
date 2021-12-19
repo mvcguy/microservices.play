@@ -38,12 +38,12 @@ namespace MG.Services.Catalog.Domain
                 : this.paginationPolicy.MaxPageSize;
         }
 
-        public ProductCategoryDto GetProductCategory(Guid id)
+        public ProductCategoryDto GetProductCategory(string id)
         {
             return repository.GetProductCategory(id).ToDto();
         }
 
-        public ProductCategoryDto DeleteProductCategory(Guid id)
+        public ProductCategoryDto DeleteProductCategory(string id)
         {
             //
             // Soft delete only
@@ -59,11 +59,11 @@ namespace MG.Services.Catalog.Domain
             return entry.ToDto();
         }
 
-        public Guid AddProductCategory(ProductCategoryDto dto)
+        public string AddProductCategory(ProductCategoryDto dto)
         {
             var model = dto.ToDbModel();
 
-            model.Id = Guid.NewGuid();
+            model.Id = Guid.NewGuid().ToString();
             model.CreatedOn = DateTime.Now;
             model.ModifiedOn = DateTime.Now;
 

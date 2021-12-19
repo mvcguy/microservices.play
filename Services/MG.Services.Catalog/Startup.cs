@@ -145,8 +145,11 @@ namespace MG.Services.Catalog
         private void SetupDomainObjects(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            {
+                var connectionString = Configuration.GetConnectionString("DefaultConnection");
+                options.UseSqlite(connectionString);
+                // options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddSingleton(provider =>
             {

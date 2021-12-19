@@ -19,7 +19,7 @@
                         <div>
                             <div style="float:left"><a href="~/?page=@(Model.PageNumber - 1 < 1 ? 1 : Model.PageNumber - 1)">&lt;&lt; Prev</a></div>
                             <div style="float:left">&nbsp;&nbsp; @(Model.PageNumber)&nbsp;/@(Model.TotalPages) &nbsp;&nbsp;</div>
-                            <div style="float:left"><a href="~/?page=@(Model.PageNumber + 1)">Next &gt;&gt</a></div>
+                            <div style="float:left"><a href="~/?page=@(Math.Min(Model.PageNumber + 1, Model.TotalPages))">Next &gt;&gt</a></div>
                         </div>
                     </div>
 
@@ -27,15 +27,17 @@
 
             </tr>
             <tr>
+                <th>Name</th>
                 <th>Description</th>
-                <th>Link</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.ProductCategories)
             {
                 <tr>
-                    <td>@item.Name</td>
+                    <td>
+                        <a href="~/home/products?categoryId=@item.Id" >@item.Name</a>
+                    </td>
                     <td>@item.Description</td>
                 </tr>
             }

@@ -8,7 +8,7 @@ namespace MG.Services.Catalog.Domain.Repositories
 {
     public class ProductCategoriesRepository : IProductCategoriesRepository
     {
-        private readonly DbContext dbContext;
+        private readonly ApplicationDbContext dbContext;
         private readonly DbSet<ProductCategory> productCategories;
 
         public ProductCategoriesRepository(ApplicationDbContext dbContext)
@@ -39,7 +39,7 @@ namespace MG.Services.Catalog.Domain.Repositories
                 .Take(take);
         }
 
-        public ProductCategory GetProductCategory(Guid id)
+        public ProductCategory GetProductCategory(string id)
         {
             return productCategories.FirstOrDefault(x => !x.Deleted && x.Id == id);
         }

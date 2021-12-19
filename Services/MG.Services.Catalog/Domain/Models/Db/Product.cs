@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MG.Services.Catalog.Domain.Models.Db
 {
     public class Product
-    {
-        public Guid Id { get; set; }
+    {        
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
@@ -14,7 +15,8 @@ namespace MG.Services.Catalog.Domain.Models.Db
 
         public string Currency { get; set; }
 
-        public Guid CategoryId { get; set; }
+        [Column(TypeName = "uniqueidentifier")]
+        public string CategoryId { get; set; }
 
         public string Description { get; set; }
 
